@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex, nofollow, noarchive" />
+<title>RailGo Control</title>
+<link rel="stylesheet" href="css/admin.css" />
+</head>
+<body>
+
+<!-- ===== Admin login screen ===== -->
+<div id="loginScreen" class="login-screen">
+  <div class="login-card">
+    <div class="brand"><span class="dot"></span> RailGo <span class="tag">CONTROL</span></div>
+    <p class="sub">Restricted access. All attempts are logged.</p>
+    <div class="form-error" id="adminLoginError"></div>
+    <form id="adminLoginForm">
+      <div class="field"><label>Username</label><input name="username" autocomplete="username" required /></div>
+      <div class="field"><label>Password</label><input type="password" name="password" autocomplete="current-password" required /></div>
+      <button class="btn btn-primary btn-block" type="submit">Enter control panel</button>
+    </form>
+  </div>
+</div>
+
+<!-- ===== Admin dashboard ===== -->
+<div id="dashScreen" class="dash-screen" style="display:none;">
+  <aside class="sidebar">
+    <div class="brand"><span class="dot"></span> RailGo <span class="tag">CONTROL</span></div>
+    <nav>
+      <button class="nav-item active" data-panel="overview">Overview</button>
+      <button class="nav-item" data-panel="loginHistory">Login history</button>
+      <button class="nav-item" data-panel="users">Users</button>
+      <button class="nav-item" data-panel="bookings">Bookings</button>
+      <button class="nav-item" data-panel="trains">Trains</button>
+    </nav>
+    <button class="btn btn-ghost btn-block" id="adminLogoutBtn">Log out</button>
+  </aside>
+
+  <main class="main">
+    <!-- Overview -->
+    <section id="panel-overview" class="panel active">
+      <h1>Overview</h1>
+      <div class="stat-grid" id="statGrid"></div>
+    </section>
+
+    <!-- Login history -->
+    <section id="panel-loginHistory" class="panel">
+      <div class="panel-head">
+        <h1>Login history</h1>
+        <div class="filters">
+          <select id="filterRole">
+            <option value="">All roles</option>
+            <option value="user">User</option>
+            <option value="admin">Admin</option>
+          </select>
+          <select id="filterSuccess">
+            <option value="">All outcomes</option>
+            <option value="1">Successful</option>
+            <option value="0">Failed</option>
+          </select>
+          <button class="btn btn-teal" id="refreshHistory">Refresh</button>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Time</th><th>Role</th><th>Identifier</th><th>Outcome</th><th>Reason</th><th>IP address</th><th>User agent</th></tr>
+          </thead>
+          <tbody id="historyBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Users -->
+    <section id="panel-users" class="panel">
+      <h1>Registered users</h1>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>ID</th><th>Name</th><th>Email</th><th>Phone</th><th>Joined</th></tr></thead>
+          <tbody id="usersBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Bookings -->
+    <section id="panel-bookings" class="panel">
+      <h1>All bookings</h1>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>PNR</th><th>Passenger acct</th><th>Train</th><th>Date</th><th>Class</th><th>Fare</th><th>Status</th></tr></thead>
+          <tbody id="bookingsBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Trains -->
+    <section id="panel-trains" class="panel">
+      <div class="panel-head">
+        <h1>Trains</h1>
+        <button class="btn btn-teal" id="addTrainBtn">+ Add train</button>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>No.</th><th>Name</th><th>Route</th><th>Departs</th><th>Arrives</th><th>Fares (SL/3A/2A/1A)</th><th></th></tr></thead>
+          <tbody id="trainsBody"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+</div>
+
+<!-- Add train modal -->
+<div class="modal-overlay" id="trainModal">
+  <div class="modal">
+    <button class="modal-close" id="closeTrainModal">✕</button>
+    <h2>Add a train</h2>
+    <div class="form-error" id="trainError"></div>
+    <form id="trainForm" class="grid2">
+      <div class="field"><label>Train number</label><input name="train_number" required /></div>
+      <div class="field"><label>Name</label><input name="name" required /></div>
+      <div class="field"><label>Source</label><input name="source" required /></div>
+      <div class="field"><label>Destination</label><input name="destination" required /></div>
+      <div class="field"><label>Departure</label><input type="time" name="departure_time" required /></div>
+      <div class="field"><label>Arrival</label><input type="time" name="arrival_time" required /></div>
+      <div class="field"><label>Duration</label><input name="duration" placeholder="e.g. 5h 10m" required /></div>
+      <div class="field"></div>
+      <div class="field"><label>Sleeper price</label><input type="number" name="sleeper_price" value="0" /></div>
+      <div class="field"><label>AC3 price</label><input type="number" name="ac3_price" value="0" /></div>
+      <div class="field"><label>AC2 price</label><input type="number" name="ac2_price" value="0" /></div>
+      <div class="field"><label>AC1 price</label><input type="number" name="ac1_price" value="0" /></div>
+      <button class="btn btn-primary btn-block" style="grid-column:1/-1;" type="submit">Add train</button>
+    </form>
+  </div>
+</div>
+
+<script src="js/admin.js"></script>
+</body>
+</html>
